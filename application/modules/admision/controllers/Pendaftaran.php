@@ -6,6 +6,7 @@ class Pendaftaran extends CI_Controller
     {
         parent::__construct();
         $this->load->model('PendaftaranModel');
+        add_js(['js/admision/pendaftaran.js']);
     }
 
     public function index()

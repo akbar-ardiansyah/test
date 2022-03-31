@@ -6,6 +6,7 @@ class Laporan extends CI_Controller
     {
         parent::__construct();
         $this->load->model('LaporanModel');
+        add_js(['js/admision/laporan.js']);
     }
 
     public function kunjungan_poliklinik()
