@@ -12,19 +12,24 @@ class Pendaftaran extends CI_Controller
     public function index()
     {
         if ($this->input->server('REQUEST_METHOD') === 'POST') {
-
-            $data = [
+            $idPasien = $this->db->select_max('id_pasien')->get('tbl_pasien')->row()->id_pasien + 1;
+            $pasien = [
                 'nama_pasien'           => $this->input->post('nama_pasien', true),
-                'nik'                   => $this->input->post('nik', true),
+                'no_identitas'          => $this->input->post('nik', true),
                 'jenis_kelamin'         => $this->input->post('jenis_kelamin', true),
                 'tgl_lahir'             => $this->input->post('tgl_lahir', true),
+
+            ];
+            $data = [
                 'tgl_berobat'           => $this->input->post('tgl_berobat', true),
                 'id_asuransi'           => $this->input->post('id_asuransi', true),
-                'id_poliklinik'        => $this->input->post('id_poliklinik', true),
+                'id_poliklinik'         => $this->input->post('id_poliklinik', true),
                 'id_dokter'             => $this->input->post('id_dokter', true),
+                'id_pasien'             => $idPasien
             ];
 
-            $pendaftaran = $this->PendaftaranModel->insert($data);
+            $datapasien      = $this->PendaftaranModel->insert('tbl_pasien', $pasien);
+            $pendaftaran = $this->PendaftaranModel->insert('tbl_pendaftaran', $data);
 
             if ($pendaftaran) {
                 $response = ['status' => true, 'message' => 'Data pendaftaran berhasil disimpan'];

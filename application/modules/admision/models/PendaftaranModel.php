@@ -19,9 +19,9 @@ class PendaftaranModel extends CI_Model
         ])->result();
     }
 
-    public function insert($data)
+    public function insert($table, $data)
     {
-        $this->db->insert('tbl_pendaftaran', $data);
+        $this->db->insert($table, $data);
 
         return $this->db->insert_id();
     }

@@ -48,7 +48,7 @@
                                     <tr>
                                         <td><?= $key + 1 ?></td>
                                         <td><?= $pasien->nama_pasien ?></td>
-                                        <td><?= $pasien->nik ?></td>
+                                        <td><?= $pasien->no_identitas ?></td>
                                         <td><?= $pasien->tgl_berobat ?></td>
                                         <td><?= $pasien->nama_asuransi ?></td>
                                         <td><?= $pasien->nama_poliklinik ?></td>
