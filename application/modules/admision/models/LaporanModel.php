@@ -20,9 +20,27 @@ class LaporanModel extends CI_Model
             SUM( IF( MONTH(tgl_berobat)= "12", 1 , 0) ) AS des'
         );
         $this->db->from('tbl_poliklinik');
-        $this->db->join('tbl_pendaftaran', 'tbl_pendaftaran.id_poliklinik = tbl_poliklinik.id_poliklinik', 'left');
-        $this->db->where('YEAR(tbl_pendaftaran.tgl_berobat)', $tahun);
+        $this->db->join('tbl_pendaftaran', 'tbl_pendaftaran.id_poliklinik = tbl_poliklinik.id_poliklinik and year(tgl_berobat) =' . $tahun, 'left');
+        // $this->db->where('YEAR(tbl_pendaftaran.tgl_berobat)', $tahun);
         $this->db->group_by('tbl_poliklinik.nama_poliklinik');
         return $this->db->get();
     }
 }
+
+
+// SELECT  nama_poliklinik,
+// 	SUM( IF( MONTH(tgl_berobat) = "1", 1 , 0) ) AS jan,
+// 	SUM( IF( MONTH(tgl_berobat)= "2", 1 , 0) ) AS feb,
+// 	SUM( IF( MONTH(tgl_berobat)= "3", 1 , 0) ) AS mar,
+// 	SUM( IF( MONTH(tgl_berobat)= "4", 1 , 0) ) AS apr,
+// 	SUM( IF( MONTH(tgl_berobat)= "5", 1 , 0) ) AS mei,
+// 	SUM( IF( MONTH(tgl_berobat)= "6", 1 , 0) ) AS jun,
+// 	SUM( IF( MONTH(tgl_berobat)= "7", 1 , 0) ) AS jul,
+// 	SUM( IF( MONTH(tgl_berobat)= "8", 1 , 0) ) AS agu,
+// 	SUM( IF( MONTH(tgl_berobat)= "9", 1 , 0) ) AS sep,
+// 	SUM( IF( MONTH(tgl_berobat)= "10", 1 , 0) ) AS okt,
+// 	SUM( IF( MONTH(tgl_berobat)= "11", 1 , 0) ) AS nov,
+// 	SUM( IF( MONTH(tgl_berobat)= "12", 1 , 0) ) AS des
+// FROM tbl_poliklinik AS a LEFT JOIN tbl_pendaftaran AS b ON a.id_poliklinik = b.id_poliklinik AND YEAR(tgl_berobat)=2020
+//  #WHERE YEAR(tgl_berobat)=2020
+// GROUP BY nama_poliklinik;
