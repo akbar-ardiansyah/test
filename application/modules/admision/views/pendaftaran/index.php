@@ -28,11 +28,12 @@
                                         </div>
 
                                         <div class="col-sm-8">
-                                            <input type="text" id="nama_pasien" name="nama_pasien" class="form-control pilih_pasien" required autocomplete="off">
+                                            <input type="hidden" id="id_pasien" name="id_pasien">
+                                            <input type="text" id="nama_pasien" class="form-control pilih_pasien" required autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="row g-3 align-items-center">
                                         <div class="col-sm-4">
                                             <label for="nik" class="col-form-label">NIK</label>
@@ -41,10 +42,10 @@
                                             <input type="text" id="nik" name="nik" class="form-control" required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
 
                                     <div class="row g-3 align-items-center">
                                         <div class="col-sm-4">
@@ -59,8 +60,8 @@
                                         </div>
                                     </div>
 
-                                </div>
-                                <div class="col-md-6">
+                                </div> -->
+                                <!-- <div class="col-md-6">
                                     <div class="row g-3 align-items-center">
                                         <div class="col-sm-4">
                                             <label for="tgl_lahir" class="col-form-label">Tgl.Lahir</label>
@@ -69,7 +70,7 @@
                                             <input type="date" id="tgl_lahir" name="tgl_lahir" class="form-control" required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <br>
                             <p class="card-description">
@@ -201,6 +202,8 @@
 
             $('#btn-save').removeAttr('disabled');
 
+            var table;
+
             $('.pilih_pasien').click(function() {
 
                 var tabel = null;
@@ -214,7 +217,7 @@
                         [0, 'asc']
                     ],
                     "ajax": {
-                        "url": site_url + 'admision/pendaftaran/fecth_pasien',
+                        "url": site_url + 'admision/pendaftaran/fetch_pasien',
                         "type": "POST"
                     },
                     "deferRender": true,
@@ -251,9 +254,9 @@
                         },
                         {
                             "data": "id_user",
-                            "render": function(data, type, full, meta) {
-                                return '<div class="text-center"><a onclick="alert(' + full.id_user + ')" class="btn btn-primary">Pilih</a></div>';
-                            }
+                            // "render": function(data, type, full, meta) {
+                            //     return '<div class="text-center"><a onclick="alert(' + full.id_user + ')" class="btn btn-primary .pilih-pasien">Pilih</a></div>';
+                            // }
                         },
                     ],
                     "columnDefs": [{
@@ -272,9 +275,28 @@
                             }
                         },
                     }],
+                    "columnDefs": [{
+                        targets: 5,
+                        orderable: true,
+                        render: function(data, type, full, meta) {
+                            return '<div class="text-center"><a data-id="' + full.id_user + '" data-namauser="' + full.nama_user + '"  class="btn btn-primary pilih-pasien">Pilih</a></div>';
+                        },
+                    }],
                 });
                 $('#exampleModalLabel').text('Formulir Pendaftaran Pasien Berobat')
                 $('#exampleModal').modal('show');
+
+
+                $(document).on('click', '.pilih-pasien', function(e) {
+                    var id_user = $(this).attr('data-id');
+                    var nama_user = $(this).attr('data-namauser');
+
+                    $('#nama_pasien').val(nama_user);
+                    $('input[name=id_pasien]').val(id_user);
+
+                    $('#exampleModal').modal('hide');
+                });
+
             });
 
 

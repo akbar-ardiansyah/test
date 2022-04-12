@@ -12,23 +12,23 @@ class Pendaftaran extends CI_Controller
     public function index()
     {
         if ($this->input->server('REQUEST_METHOD') === 'POST') {
-            $idPasien = $this->db->select_max('id_pasien')->get('tbl_pasien')->row()->id_pasien + 1;
-            $pasien = [
-                'nama_pasien'           => $this->input->post('nama_pasien', true),
-                'no_identitas'          => $this->input->post('nik', true),
-                'jenis_kelamin'         => $this->input->post('jenis_kelamin', true),
-                'tgl_lahir'             => $this->input->post('tgl_lahir', true),
+            // $idPasien = $this->db->select_max('id_pasien')->get('tbl_pasien')->row()->id_pasien + 1;
+            // $pasien = [
+            //     'nama_pasien'           => $this->input->post('nama_pasien', true),
+            //     'no_identitas'          => $this->input->post('nik', true),
+            //     'jenis_kelamin'         => $this->input->post('jenis_kelamin', true),
+            //     'tgl_lahir'             => $this->input->post('tgl_lahir', true),
 
-            ];
+            // ];
             $data = [
                 'tgl_berobat'           => $this->input->post('tgl_berobat', true),
                 'id_asuransi'           => $this->input->post('id_asuransi', true),
                 'id_poliklinik'         => $this->input->post('id_poliklinik', true),
                 'id_dokter'             => $this->input->post('id_dokter', true),
-                'id_pasien'             => $idPasien
+                'id_pasien'             => $this->input->post('id_pasien', true)
             ];
 
-            $datapasien      = $this->PendaftaranModel->insert('tbl_pasien', $pasien);
+            // $datapasien      = $this->PendaftaranModel->insert('tbl_pasien', $pasien);
             $pendaftaran = $this->PendaftaranModel->insert('tbl_pendaftaran', $data);
 
             if ($pendaftaran) {
@@ -63,7 +63,7 @@ class Pendaftaran extends CI_Controller
         echo $option;
     }
 
-    public function fecth_pasien()
+    public function fetch_pasien()
     {
         $this->load->library('Datatable');
         $this->datatable->select("id_user, nama_user, no_identitas, jenis_kelamin, date_format(tgl_lahir, '%d %M %Y') as tgl_lahir, sts_user");
