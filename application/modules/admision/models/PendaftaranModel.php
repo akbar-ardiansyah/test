@@ -18,10 +18,10 @@ class PendaftaranModel extends CI_Model
         //     'id_poliklinik' => $id_poliklinik
         // ])->result();
 
-        $this->db->select('a.nama_user, a.id_dokter');
-        $this->db->join('b.tbl_dokter_jaga', 'a.id_dokter = b.id_user');
-        $this->db->where('a.id_poliklinik', $id_poliklinik);
-        $this->db->get('tbl_user b')->result();
+        $this->db->select('a.nama_user, tbl_dokter_jaga.id_dokter');
+        $this->db->join('tbl_dokter_jaga', 'tbl_dokter_jaga.id_dokter = a.id_user');
+        $this->db->where('tbl_dokter_jaga.id_poliklinik', $id_poliklinik);
+        return $this->db->get('tbl_user a')->result();
     }
 
     public function insert($table, $data)

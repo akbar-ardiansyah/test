@@ -57,9 +57,8 @@ class Pendaftaran extends CI_Controller
         $option = '<option value="">Pilih Dokter</option>';
 
         foreach ($dokters as $dokter) {
-            $option .= '<option value="' . $dokter->id_dokter . '">' . $dokter->nama_dokter . '</option>';
+            $option .= '<option value="' . $dokter->id_dokter . '">' . $dokter->nama_user . '</option>';
         }
-
         echo $option;
     }
 
