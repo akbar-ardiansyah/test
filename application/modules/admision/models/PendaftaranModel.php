@@ -22,7 +22,13 @@ class PendaftaranModel extends CI_Model
     public function insert($table, $data)
     {
         $this->db->insert($table, $data);
-
         return $this->db->insert_id();
     }
+
+    // public function ambil_data_user()
+    // {
+    //     $pasien = $this->db->get('tbl_user')->result_array();
+    //     echo json_encode($pasien);
+    // }
+
 }

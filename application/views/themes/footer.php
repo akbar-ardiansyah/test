@@ -15,15 +15,13 @@
         <!-- page-body-wrapper ends -->
         </div>
         <!-- container-scroller -->
-
         <!-- plugins:js -->
         <script src="<?= base_url() ?>assets/vendors/js/vendor.bundle.base.js"></script>
         <script src="<?= base_url() ?>assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="<?= base_url() ?>assets/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="<?= base_url() ?>assets/js/template.js"></script>
-        <?php
-        print_r(asset_js());
-        ?>
+
+
         <!-- endinject -->
         </body>
 

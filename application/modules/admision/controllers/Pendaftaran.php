@@ -6,7 +6,7 @@ class Pendaftaran extends CI_Controller
     {
         parent::__construct();
         $this->load->model('PendaftaranModel');
-        add_js(['js/admision/pendaftaran.js']);
+        // add_js(['js/admision/pendaftaran.js']);
     }
 
     public function index()
@@ -61,5 +61,13 @@ class Pendaftaran extends CI_Controller
         }
 
         echo $option;
+    }
+
+    public function fecth_pasien()
+    {
+        $this->load->library('Datatable');
+        $this->datatable->select("id_user, nama_user, no_identitas, jenis_kelamin, date_format(tgl_lahir, '%d %M %Y') as tgl_lahir, sts_user");
+        $this->datatable->from("tbl_user");
+        echo $this->datatable->generate();
     }
 }

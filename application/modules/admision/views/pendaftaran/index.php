@@ -24,10 +24,11 @@
                                 <div class="col-md-6">
                                     <div class="row g-3 align-items-center">
                                         <div class="col-sm-4">
-                                            <label for="nama_pasien" class="col-form-label">Nama Lengkap Pasien</label>
+                                            <label for="nama_pasien" class="col-form-label">Pilih Pasien</label>
                                         </div>
+
                                         <div class="col-sm-8">
-                                            <input type="text" id="nama_pasien" name="nama_pasien" class="form-control" required>
+                                            <input type="text" id="nama_pasien" name="nama_pasien" class="form-control pilih_pasien" required autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -156,3 +157,158 @@
         </div>
     </div>
 </div>
+
+<style>
+    tbody tr td a {
+        text-align: center;
+        align-items: center;
+        margin: auto;
+    }
+</style>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-bordered" id="list_user" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th> No </th>
+                            <th> nama</th>
+                            <th> no identitas </th>
+                            <th> jenis kelamin </th>
+                            <th> Tanggal lahir </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.onreadystatechange = () => {
+        if (document.readyState === "complete") {
+
+            $('#btn-save').removeAttr('disabled');
+
+            $('.pilih_pasien').click(function() {
+
+                var tabel = null;
+                tabel = $('#list_user').DataTable({
+                    "processing": true,
+                    "responsive": true,
+                    "serverSide": true,
+                    "ordering": true,
+                    "destroy": true,
+                    "order": [
+                        [0, 'asc']
+                    ],
+                    "ajax": {
+                        "url": site_url + 'admision/pendaftaran/fecth_pasien',
+                        "type": "POST"
+                    },
+                    "deferRender": true,
+                    "aLengthMenu": [
+                        [10, 50, 100],
+                        [10, 50, 100]
+                    ],
+                    "columns": [{
+                            "data": 'id_user',
+                            // "sortable": false,
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "nama_user"
+
+                        },
+                        {
+                            "data": "no_identitas"
+                        },
+                        {
+                            "data": "jenis_kelamin",
+                            "render": function(data, type, full, meta) {
+                                if (full.jenis_kelamin == 1) {
+                                    return ('laki-laki');
+                                } else {
+                                    return ('perempuan');
+                                }
+                            }
+                        },
+                        {
+                            "data": "tgl_lahir"
+                        },
+                        {
+                            "data": "id_user",
+                            "render": function(data, type, full, meta) {
+                                return '<div class="text-center"><a onclick="alert(' + full.id_user + ')" class="btn btn-primary">Pilih</a></div>';
+                            }
+                        },
+                    ],
+                    "columnDefs": [{
+                        targets: 1,
+                        orderable: true,
+                        render: function(data, type, full, meta) {
+                            if (full.sts_user != 1) {
+                                return (
+                                    `<span class="font-weight-bold">` + full.nama_user + `</span>
+                                    <span class="badge rounded-pill bg-success float-end"">dokter</span>`
+                                );
+                            } else {
+                                return (
+                                    `<span class="font-weight-bold">` + full.nama_user + `</span>`
+                                );
+                            }
+                        },
+                    }],
+                });
+                $('#exampleModalLabel').text('Formulir Pendaftaran Pasien Berobat')
+                $('#exampleModal').modal('show');
+            });
+
+
+
+            $('#id_poliklinik').change(function() {
+                var id_poliklinik = $(this).val();
+
+                $('#id_dokter').html('<option value="">Mohon tunggu...</option>');
+
+                $.post(site_url + 'admision/pendaftaran/fetch_dokter', {
+                    id_poliklinik
+                }, function(response) {
+                    $('#id_dokter').html(response);
+                });
+            });
+
+            $('#form_pendaftaran').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.message);
+                        if (response.status == true) {
+                            $('input, select').val('').trigger('change');
+                        }
+                    },
+                    error: function(error) {
+                        alert('Internal server error');
+                    }
+                });
+            });
+
+        }
+    }
+</script>
