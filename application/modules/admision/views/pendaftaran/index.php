@@ -206,97 +206,160 @@
 
             $('.pilih_pasien').click(function() {
 
-                var tabel = null;
-                tabel = $('#list_user').DataTable({
-                    "processing": true,
-                    "responsive": true,
-                    "serverSide": true,
-                    "ordering": true,
-                    "destroy": true,
-                    "order": [
-                        [0, 'asc']
-                    ],
-                    "ajax": {
-                        "url": site_url + 'admision/pendaftaran/fetch_pasien',
-                        "type": "POST"
-                    },
-                    "deferRender": true,
-                    "aLengthMenu": [
-                        [10, 50, 100],
-                        [10, 50, 100]
-                    ],
-                    "columns": [{
-                            "data": 'id_user',
-                            // "sortable": false,
-                            render: function(data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            }
-                        },
-                        {
-                            "data": "nama_user"
-
-                        },
-                        {
-                            "data": "no_identitas"
-                        },
-                        {
-                            "data": "jenis_kelamin",
-                            "render": function(data, type, full, meta) {
-                                if (full.jenis_kelamin == 1) {
-                                    return ('laki-laki');
-                                } else {
-                                    return ('perempuan');
-                                }
-                            }
-                        },
-                        {
-                            "data": "tgl_lahir"
-                        },
-                        {
-                            "data": "id_user",
-                            // "render": function(data, type, full, meta) {
-                            //     return '<div class="text-center"><a onclick="alert(' + full.id_user + ')" class="btn btn-primary .pilih-pasien">Pilih</a></div>';
-                            // }
-                        },
-                    ],
-                    "columnDefs": [{
-                        targets: 1,
-                        orderable: true,
-                        render: function(data, type, full, meta) {
-                            if (full.sts_user != 1) {
-                                return (
-                                    `<span class="font-weight-bold">` + full.nama_user + `</span>
-                                    <span class="badge rounded-pill bg-success float-end"">dokter</span>`
-                                );
-                            } else {
-                                return (
-                                    `<span class="font-weight-bold">` + full.nama_user + `</span>`
-                                );
-                            }
-                        },
-                    }],
-                    "columnDefs": [{
-                        targets: 5,
-                        orderable: true,
-                        render: function(data, type, full, meta) {
-                            return '<div class="text-center"><a data-id="' + full.id_user + '" data-namauser="' + full.nama_user + '"  class="btn btn-primary pilih-pasien">Pilih</a></div>';
-                        },
-                    }],
-                });
-                $('#exampleModalLabel').text('Formulir Pendaftaran Pasien Berobat')
                 $('#exampleModal').modal('show');
+                if (!table) {
+                    table = $('#list_user').DataTable({
+                        serverSide: true,
+                        processing: true,
+                        ajax: {
+                            url: site_url + 'admision/pendaftaran/fetch_pasien',
+                            type: 'POST'
+                        },
+                        columns: [{
+                                "data": 'id_user',
+                                // "sortable": false,
+                                render: function(data, type, row, meta) {
+                                    return meta.row + meta.settings._iDisplayStart + 1;
+                                }
+                            },
+                            {
+                                "data": "nama_user",
+                                render: function(data, type, full, meta) {
+                                    if (full.sts_user != 1) {
+                                        return (
+                                            `<span class="font-weight-bold">` + full.nama_user + `</span>
+                                    <span class="badge rounded-pill bg-success float-end"">dokter</span>`
+                                        );
+                                    } else {
+                                        return (
+                                            `<span class="font-weight-bold">` + full.nama_user + `</span>`
+                                        );
+                                    }
+                                },
+                            },
+                            {
+                                "data": "no_identitas"
+                            },
+                            {
+                                "data": "jenis_kelamin",
+                                "render": function(data, type, full, meta) {
+                                    if (full.jenis_kelamin == 1) {
+                                        return ('laki-laki');
+                                    } else {
+                                        return ('perempuan');
+                                    }
+                                }
+                            },
+                            {
+                                "data": "tgl_lahir"
+                            },
+                            {
+                                "data": "id_user",
+                            },
+                        ],
+                    });
+                }
+            });
+
+            // $('.pilih_pasien').click(function() {
+
+            //     var tabel = null;
+            //     tabel = $('#list_user').DataTable({
+            //         "processing": true,
+            //         "responsive": true,
+            //         "serverSide": true,
+            //         "ordering": true,
+            //         "destroy": true,
+            //         "order": [
+            //             [0, 'asc']
+            //         ],
+            //         "ajax": {
+            //             "url": site_url + 'admision/pendaftaran/fetch_pasien',
+            //             "type": "POST"
+            //         },
+            //         "deferRender": true,
+            //         "aLengthMenu": [
+            //             [10, 50, 100],
+            //             [10, 50, 100]
+            //         ],
+            //         "columns": [{
+            //                 "data": 'id_user',
+            //                 // "sortable": false,
+            //                 render: function(data, type, row, meta) {
+            //                     return meta.row + meta.settings._iDisplayStart + 1;
+            //                 }
+            //             },
+            //             {
+            //                 "data": "nama_user"
+
+            //             },
+            //             {
+            //                 "data": "no_identitas"
+            //             },
+            //             {
+            //                 "data": "jenis_kelamin",
+            //                 "render": function(data, type, full, meta) {
+            //                     if (full.jenis_kelamin == 1) {
+            //                         return ('laki-laki');
+            //                     } else {
+            //                         return ('perempuan');
+            //                     }
+            //                 }
+            //             },
+            //             {
+            //                 "data": "tgl_lahir"
+            //             },
+            //             {
+            //                 "data": "id_user",
+            //             },
+            //         ],
+            //         "columnDefs": [{
+            //             targets: 1,
+            //             orderable: true,
+            //             render: function(data, type, full, meta) {
+            //                 if (full.sts_user != 1) {
+            //                     return (
+            //                         `<span class="font-weight-bold">` + full.nama_user + `</span>
+            //                         <span class="badge rounded-pill bg-success float-end"">dokter</span>`
+            //                     );
+            //                 } else {
+            //                     return (
+            //                         `<span class="font-weight-bold">` + full.nama_user + `</span>`
+            //                     );
+            //                 }
+            //             },
+            //         }],
+            //         "columnDefs": [{
+            //             targets: 5,
+            //             orderable: true,
+            //             render: function(data, type, full, meta) {
+            //                 return '<div class="text-center"><a data-id="' + full.id_user + '" data-namauser="' + full.nama_user + '"  class="btn btn-primary pilih-pasien">Pilih</a></div>';
+            //             },
+            //         }],
+            //     });
+            //     $('#exampleModalLabel').text('Formulir Pendaftaran Pasien Berobat')
+            //     $('#exampleModal').modal('show');
 
 
-                $(document).on('click', '.pilih-pasien', function(e) {
-                    var id_user = $(this).attr('data-id');
-                    var nama_user = $(this).attr('data-namauser');
+            // $(document).on('click', '.pilih-pasien', function(e) {
+            //     var id_user = $(this).attr('data-id');
+            //     var nama_user = $(this).attr('data-namauser');
 
-                    $('#nama_pasien').val(nama_user);
-                    $('input[name=id_pasien]').val(id_user);
+            //     $('#nama_pasien').val(nama_user);
+            //     $('input[name=id_pasien]').val(id_user);
 
-                    $('#exampleModal').modal('hide');
-                });
+            //     $('#exampleModal').modal('hide');
+            // });
 
+            // });
+            $(document).on('click', '.pilih-pasien', function(e) {
+                var id_user = $(this).attr('data-id');
+                var nama_user = $(this).attr('data-namauser');
+
+                $('#nama_pasien').val(nama_user);
+                $('input[name=id_pasien]').val(id_user);
+
+                $('#exampleModal').modal('hide');
             });
 
 

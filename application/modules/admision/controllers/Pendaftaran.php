@@ -65,8 +65,9 @@ class Pendaftaran extends CI_Controller
     public function fetch_pasien()
     {
         $this->load->library('Datatable');
-        $this->datatable->select("id_user, nama_user, no_identitas, jenis_kelamin, date_format(tgl_lahir, '%d %M %Y') as tgl_lahir, sts_user");
+        $this->datatable->select("sts_user,nama_user, no_identitas, jenis_kelamin, date_format(tgl_lahir, '%d %M %Y') as tgl_lahir,id_user");
         $this->datatable->from("tbl_user");
+        $this->datatable->edit_column('id_user', '<button data-id="$1" data-namauser="$2" class="btn btn-xs btn-success pilih-pasien"><i class="fa fa-check"></i> Pilih Pasien</button>', 'id_user, nama_user');
         echo $this->datatable->generate();
     }
 }
