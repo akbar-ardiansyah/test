@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <table id="data_pasien" class="table table-striped table-hover">
+                        <table id="data_pasien" class="table table-striped table-hover" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -44,17 +44,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($pasiens as $key => $pasien) : ?>
-                                    <tr>
-                                        <td><?= $key + 1 ?></td>
-                                        <td><?= $pasien->nama_pasien ?></td>
-                                        <td><?= $pasien->no_identitas ?></td>
-                                        <td><?= $pasien->tgl_berobat ?></td>
-                                        <td><?= $pasien->nama_asuransi ?></td>
-                                        <td><?= $pasien->nama_poliklinik ?></td>
-                                        <td><?= $pasien->nama_dokter ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -69,7 +58,56 @@
     document.onreadystatechange = () => {
         if (document.readyState === "complete") {
 
-            $('#data_pasien').DataTable();
+            var table;
+            if (!table) {
+                table = $('#data_pasien').DataTable({
+                    serverSide: true,
+                    processing: true,
+                    ajax: {
+                        url: site_url + 'admision/pasien/fetch_pasien',
+                        type: 'POST'
+                    },
+                    columns: [{
+                            "data": 'id_pendaftaran',
+                            "sortable": false,
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            "data": "nama_user",
+                            render: function(data, type, full, meta) {
+                                if (full.sts_user != 1) {
+                                    return (
+                                        `<span class="font-weight-bold">` + full.nama_user + `</span>
+                                    <span class="badge rounded-pill bg-success float-end"">dokter</span>`
+                                    );
+                                } else {
+                                    return (
+                                        `<span class="font-weight-bold">` + full.nama_user + `</span>`
+                                    );
+                                }
+                            },
+                        },
+                        {
+                            "data": "no_identitas"
+                        },
+                        {
+                            "data": "tgl_berobat"
+                        },
+                        {
+                            "data": "nama_asuransi"
+                        },
+                        {
+                            "data": "nama_poliklinik",
+                        },
+                        {
+                            "data": "id_dokter",
+
+                        },
+                    ],
+                });
+            }
 
         }
     }
